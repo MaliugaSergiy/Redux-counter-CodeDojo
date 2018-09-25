@@ -5,6 +5,7 @@ import Store from "./store";
 
 import "./styles.css";
 
+// xzx
 const initialState = { count: 0 };
 
 function updateState(state, action) {
