@@ -5,16 +5,16 @@ import { createStore } from "./redux";
 
 import "./styles.css";
 
-const initialState = { count: 5, max: 10, min: 0 };
+const initialState = { count: 5, min: 0, max: 100 };
 
 function reducer(state = { count: 0, min: -5, max: 10 }, action) {
   const { count, min, max } = state;
 
   switch (action.type) {
     case "INCREMENT":
-      return { ...state, count: count >= max ? max : count + action.amount };
+      return { ...state, count: count >= max ? max : count + action.step };
     case "DECREMENT":
-      return { ...state, count: count <= min ? min : count - action.amount };
+      return { ...state, count: count <= min ? min : count - action.step };
     case "RESET":
       return { ...state, count: 0 };
     default:
@@ -22,30 +22,40 @@ function reducer(state = { count: 0, min: -5, max: 10 }, action) {
   }
 }
 
-const incrementAction = { type: "INCREMENT", amount: 1 };
-const decrementAction = { type: "DECREMENT", amount: 1 };
-const resetAction = { type: "RESET" };
+// const incrementAction = { type: "INCREMENT", amount: 1 };
+// const decrementAction = { type: "DECREMENT", amount: 1 };
+// const resetAction = { type: "RESET" };
+
+function increment(step) {
+  return { type: "INCREMENT", step };
+}
+
+function decrement(step) {
+  return { type: "DECREMENT", step };
+}
+
+function reset() {
+  return { type: "RESET" };
+}
 
 const store = createStore(reducer, initialState);
 
 class Counter extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     store.subscribe(() => this.forceUpdate());
   }
 
   increment = () => {
-    store.dispatch(incrementAction);
+    let step = this.refs.step.value || 1;
+    store.dispatch(increment(+step));
   };
 
   decrement = () => {
-    store.dispatch(decrementAction);
+    let step = this.refs.step.value || 1;
+    store.dispatch(decrement(+step));
   };
   reset = () => {
-    store.dispatch(resetAction);
+    store.dispatch(reset());
   };
 
   render() {
@@ -65,6 +75,7 @@ class Counter extends React.Component {
             +
           </button>
         </div>
+        <input ref="step" defaultValue={1} />
       </div>
     );
   }
