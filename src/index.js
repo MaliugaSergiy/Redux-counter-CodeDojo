@@ -21,7 +21,6 @@ function reducer(state = { count: 0, min: -5, max: 10 }, action) {
       return state;
   }
 }
-
 // const incrementAction = { type: "INCREMENT", amount: 1 };
 // const decrementAction = { type: "DECREMENT", amount: 1 };
 // const resetAction = { type: "RESET" };
